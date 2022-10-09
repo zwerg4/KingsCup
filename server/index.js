@@ -77,8 +77,29 @@ io.on("connection", (socket) => {
                 socket.emit('errorOccured','The game is already in progress, try an other one!');
             }
 
-            room.players.push()
+        } catch(e){
+            console.log(e);
+        }
+    });
 
+    socket.on('startGame', async ({roomID}) => {
+        try {
+            if(!roomID.match(/^[0-9a-fA-F]{24}$/)){
+                socket.emit('errorOccured','Error finding the Room')
+                return;
+            }
+
+            let room = await Room.findById(roomID);
+
+            if(room.isJoin){
+                socket.join(roomID);
+                room.isJoin = false;
+                room = await room.save();
+
+                io.to(roomID).emit("startGame",room);  
+            } else {
+                socket.emit('errorOccured','The game is already in progress, try an other one!');
+            }
         } catch(e){
             console.log(e);
         }
@@ -99,5 +120,3 @@ server.listen(port, '0.0.0.0', () =>{
 console.log("========================================================");
 console.log("                  NODE JS SERVER STARTED                ");
 console.log("========================================================");
-
-console.log(process.env)

@@ -31,6 +31,15 @@ class SocketMethods {
     }
   }
 
+  void startGame(String roomID) {
+    log("Room: " + roomID + " game starts!");
+    if (roomID.isNotEmpty) {
+      _socketClient.emit('startGame', {
+        'roomID': roomID,
+      });
+    }
+  }
+
   // LISTENER
   void createRoomSuccessListener(BuildContext context) {
     _socketClient.on('createRoomSuccess', (room) {
@@ -54,9 +63,18 @@ class SocketMethods {
     });
   }
 
+  void startGameListener(BuildContext context) {
+    _socketClient.on('startGame', (room) {
+      Provider.of<RoomDataProvider>(context, listen: false)
+          .updateRoomData(room);
+      Navigator.pushNamed(context, GameScreen.routeName);
+    });
+  }
+
   void updatePlayer(BuildContext context){
     _socketClient.on('updatePlayer', (playerData){
       Provider.of<RoomDataProvider>(context,listen: false).updatePlayer(playerData[0]['nickname'], playerData[0]['socketID'], playerData[1]);
     });
   }
 }
+

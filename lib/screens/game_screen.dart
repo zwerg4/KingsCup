@@ -4,6 +4,8 @@ import 'package:first_multiplayer_game/screens/waiting_lobby_host.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../resources/socket_methods.dart';
+
 class GameScreen extends StatefulWidget {
   static String routeName = '/game';
 
@@ -14,6 +16,15 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
+  final SocketMethods _socketMethods = SocketMethods();
+
+  @override
+  void initState() {
+    super.initState();
+    _socketMethods.startGameListener(context);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     RoomDataProvider roomDataProvider = Provider.of<RoomDataProvider>(context);

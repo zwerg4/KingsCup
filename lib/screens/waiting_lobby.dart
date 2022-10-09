@@ -1,4 +1,5 @@
 import 'package:first_multiplayer_game/provider/room_data_provider.dart';
+import 'package:first_multiplayer_game/responsive/responsive.dart';
 import 'package:first_multiplayer_game/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,24 +30,25 @@ class _WaitingLobbyState extends State<WaitingLobby> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-
-        const Text('Waiting for Host to start the game!'),
-        const SizedBox(
-          height: 20,
-        ),
-        const Text('LOBBY ID, share it !'),
-        const SizedBox(
-          height: 10,
-        ),
-        CustomTextField(
-          controller: roomIDController,
-          hintText: '',
-          isReadOnly: true,
-        ),
-      ],
+    return Responsive(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text('Waiting for Host to start the game!'),
+          const SizedBox(
+            height: 20,
+          ),
+          const Text('LOBBY ID, share it !'),
+          const SizedBox(
+            height: 10,
+          ),
+          CustomTextField(
+            controller: roomIDController,
+            hintText: '',
+            isReadOnly: true,
+          ),
+        ],
+      ),
     );
   }
 }
