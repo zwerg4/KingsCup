@@ -1,6 +1,6 @@
 import 'package:first_multiplayer_game/provider/room_data_provider.dart';
-import 'package:first_multiplayer_game/screens/waiting_lobby.dart';
-import 'package:first_multiplayer_game/screens/waiting_lobby_host.dart';
+import 'package:first_multiplayer_game/views/waiting_lobby.dart';
+import 'package:first_multiplayer_game/views/waiting_lobby_host.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:first_multiplayer_game/provider/room_data_provider.dart';
 import 'package:first_multiplayer_game/screens/game_screen.dart';
+import 'package:first_multiplayer_game/screens/in_game_screen.dart';
 import 'package:first_multiplayer_game/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -53,7 +54,8 @@ class SocketMethods {
     _socketClient.on('joinRoomSuccess', (room) {
       Provider.of<RoomDataProvider>(context, listen: false)
           .updateRoomData(room);
-      Navigator.pushNamed(context, GameScreen.routeName);
+      //Navigator.pushNamed(context, GameScreen.routeName);
+      Navigator.pushNamed(context, inGameScreen.routeName);
     });
   }
 

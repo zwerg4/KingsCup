@@ -1,11 +1,11 @@
 import 'package:first_multiplayer_game/provider/room_data_provider.dart';
 import 'package:first_multiplayer_game/screens/create_room_screen.dart';
 import 'package:first_multiplayer_game/screens/game_screen.dart';
+import 'package:first_multiplayer_game/screens/in_game_screen.dart';
 import 'package:first_multiplayer_game/screens/join_room_screen.dart';
 import 'package:first_multiplayer_game/screens/main_menu_screen.dart';
 import 'package:first_multiplayer_game/utils/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:first_multiplayer_game/utils/colors.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -29,8 +29,9 @@ class MyApp extends StatelessWidget {
           JoinRoomScreen.routeName: (context) => const JoinRoomScreen(),
           CreateRoomScreen.routeName: (context) => const CreateRoomScreen(),
           GameScreen.routeName : (context) => const GameScreen(),
+          inGameScreen.routeName : (context) => const inGameScreen(),
         },
-        initialRoute: MainManuScreen.routeName,
+        initialRoute:MainManuScreen.routeName, // MainManuScreen.routeName,
       ),
     );
   }
