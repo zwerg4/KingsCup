@@ -22,7 +22,7 @@ const DB = "mongodb+srv://"+process.env.mongoAPI;
 
 io.on("connection", (socket) => {
     console.log("socket.io connected");
-    socket.on('createRoom', async ({ nickname }) => {
+    socket.on('createRoom', async ({ nickname, cards,nextCard }) => {
         console.log(nickname + " created a Room");
         console.log("SocketID: " + socket.id);
 
@@ -39,6 +39,12 @@ io.on("connection", (socket) => {
             //add player to room and its his turn
             room.players.push(player);
             room.turn = player;
+
+            room.cards = cards;
+            room.nextCard = nextCard;
+            console.log("nextCard: " + room.roundReady);
+            
+
             room = await room.save();
             console.log(room);
 
@@ -100,6 +106,27 @@ io.on("connection", (socket) => {
             } else {
                 socket.emit('errorOccured','The game is already in progress, try an other one!');
             }
+        } catch(e){
+            console.log(e);
+        }
+    });
+
+    socket.on('cardFlipped', async ({roomID, nextCard, cards}) => {
+        try {
+            if(!roomID.match(/^[0-9a-fA-F]{24}$/)){
+                socket.emit('errorOccured','Error finding the Room')
+                return;
+            }
+
+            let room = await Room.findById(roomID);
+
+                socket.join(roomID);
+                room.roundReady = false;
+                room.nextCard = nextCard;
+                room.cards = cards;
+                room = await room.save();
+
+                io.to(roomID).emit("cardFlipped",room);  
         } catch(e){
             console.log(e);
         }

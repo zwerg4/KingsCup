@@ -6,6 +6,7 @@ import 'package:first_multiplayer_game/screens/in_game_screen.dart';
 import 'package:first_multiplayer_game/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:first_multiplayer_game/model/cards.dart';
 
 import 'socket_client.dart';
 
@@ -13,11 +14,13 @@ class SocketMethods {
   final _socketClient = SocketClient.instance.socket!;
 
   //EMIT
-  void createRoom(String _nickname) {
+  void createRoom(String _nickname,nextCard,cards) {
     log("CreateROOM from " + _nickname);
     if (_nickname.isNotEmpty) {
       _socketClient.emit('createRoom', {
         'nickname': _nickname,
+        'cards': cards,
+        'nextCard':nextCard,
       });
     }
   }
@@ -41,6 +44,15 @@ class SocketMethods {
     }
   }
 
+  void cardFlipped(String roomID, String nextCard, List<String> cards) {
+    log("card was flipped in Room " + roomID);
+    _socketClient.emit('cardFlipped', {
+      'roomID': roomID,
+      'nextCard' : nextCard,
+      'cards' : cards,
+    });
+  }
+
   // LISTENER
   void createRoomSuccessListener(BuildContext context) {
     _socketClient.on('createRoomSuccess', (room) {
@@ -54,8 +66,8 @@ class SocketMethods {
     _socketClient.on('joinRoomSuccess', (room) {
       Provider.of<RoomDataProvider>(context, listen: false)
           .updateRoomData(room);
-      //Navigator.pushNamed(context, GameScreen.routeName);
-      Navigator.pushNamed(context, inGameScreen.routeName);
+      Navigator.pushNamed(context, GameScreen.routeName);
+      //Navigator.pushNamed(context, inGameScreen.routeName);
     });
   }
 
@@ -69,13 +81,20 @@ class SocketMethods {
     _socketClient.on('startGame', (room) {
       Provider.of<RoomDataProvider>(context, listen: false)
           .updateRoomData(room);
-      Navigator.pushNamed(context, GameScreen.routeName);
+      Navigator.pushNamed(context, inGameScreen.routeName);
     });
   }
 
   void updatePlayer(BuildContext context){
     _socketClient.on('updatePlayer', (playerData){
       Provider.of<RoomDataProvider>(context,listen: false).updatePlayer(playerData[0]['nickname'], playerData[0]['socketID'], playerData[1]);
+    });
+  }
+
+  void cardFlippedListener(BuildContext context) {
+    _socketClient.on('cardFlipped', (room) {
+      Provider.of<RoomDataProvider>(context, listen: false)
+          .updateRoomData(room);
     });
   }
 }

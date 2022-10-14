@@ -1,8 +1,10 @@
 import 'dart:core';
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
+
 class Cards {
-  final List<String> allCardsList = [
+  List<String> allCardsList = [
     'a_1.png',
     'a_2.png',
     'a_3.png',
@@ -56,13 +58,18 @@ class Cards {
     'd_12.png',
     'd_13.png',
   ];
-
+  String nextCard = '';
  // final _random = Random();
 
-  Cards();
+  Cards(){
+    nextCard = getRandomCard();
+  }
 
   String getRandomCard(){
     final _random = Random();
-    return allCardsList[_random.nextInt(allCardsList.length)];
+    int cardIndex = _random.nextInt(allCardsList.length);
+    String card = allCardsList[cardIndex];
+    allCardsList.removeAt(cardIndex);
+    return card;
   }
 }

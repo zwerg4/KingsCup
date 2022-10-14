@@ -1,9 +1,11 @@
+import 'package:first_multiplayer_game/provider/room_data_provider.dart';
 import 'package:first_multiplayer_game/responsive/responsive.dart';
 import 'package:first_multiplayer_game/widgets/custom_button.dart';
 import 'package:first_multiplayer_game/widgets/custom_text.dart';
 import 'package:first_multiplayer_game/widgets/custom_textfield.dart';
 import 'package:first_multiplayer_game/resources/socket_methods.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CreateRoomScreen extends StatefulWidget {
   static String routeName = '/create-room';
@@ -32,6 +34,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
 
   @override
   Widget build(BuildContext context) {
+    RoomDataProvider _roomDataProvider = Provider.of<RoomDataProvider>(context);
+
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Responsive(
@@ -48,7 +52,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
               SizedBox(height: size.height*0.08,),
               CustomTextField(controller: _nameController, hintText: "Enter your nickname"),
               SizedBox(height: size.height*0.03,),
-              CustomButton(onTab: () => _socketMethods.createRoom(_nameController.text), text: "Create")
+              CustomButton(onTab: () => _socketMethods.createRoom(_nameController.text,_roomDataProvider.cards.nextCard,_roomDataProvider.cards.allCardsList), text: "Create")
             ],
           ),
         ),

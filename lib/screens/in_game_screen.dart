@@ -2,6 +2,8 @@ import 'package:first_multiplayer_game/views/card.dart';
 import 'package:first_multiplayer_game/views/turn_display.dart';
 import 'package:flutter/material.dart';
 
+import '../resources/socket_methods.dart';
+
 class inGameScreen extends StatefulWidget {
   static String routeName = '/inGame';
 
@@ -12,6 +14,15 @@ class inGameScreen extends StatefulWidget {
 }
 
 class _inGameScreenState extends State<inGameScreen> {
+  final SocketMethods _socketMethods = SocketMethods();
+
+  @override
+  void initState() {
+    super.initState();
+    _socketMethods.cardFlippedListener(context);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
